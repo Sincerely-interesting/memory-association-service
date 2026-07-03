@@ -1,0 +1,330 @@
+{
+  "enable_memory_system": {
+    "description": "启用印象系统",
+    "type": "bool",
+    "hint": "是否启用印象记忆系统，关闭后将停止所有记忆相关的功能",
+    "default": true,
+    "obvious_hint": true
+  },
+  "enable_group_isolation": {
+    "description": "启用群聊隔离",
+    "type": "bool",
+    "hint": "是否启用群聊记忆隔离，防止不同群之间的记忆互相泄露",
+    "default": true
+  },
+  "recall_mode": {
+    "description": "主要工作模式",
+    "type": "string",
+    "hint": "选择主要的工作模式，simple：最方便，无需配置，效果最差, llm：允许使用llm工作, embedding：embedding和llm配合工作",
+    "options": ["simple", "llm", "embedding"],
+    "default": "simple"
+  },
+  "enable_associative_recall": {
+    "description": "启用联想回忆",
+    "type": "bool",
+    "hint": "是否在llm和embedding模式下启用基于知识图谱的联想回忆功能，会智能补充相关记忆",
+    "default": true
+  },
+  "forget_threshold_days": {
+    "description": "遗忘阈值天数",
+    "type": "int",
+    "hint": "多少天后开始遗忘不活跃的记忆",
+    "default": 30
+  },
+  "consolidation_interval_hours": {
+    "description": "记忆整理间隔小时",
+    "type": "int",
+    "hint": "多久进行一次记忆整理和合并",
+    "default": 24
+  },
+  "max_memories_per_topic": {
+    "description": "每个主题最大记忆数",
+    "type": "int",
+    "hint": "单个主题下最多保留多少条记忆",
+    "default": 10
+  },
+  "recall_trigger_probability": {
+    "description": "回忆触发概率",
+    "type": "float",
+    "hint": "对话中触发回忆的概率(0-1)（此选项使用llm）",
+    "default": 0
+  },
+  "enable_forgetting": {
+    "description": "启用遗忘机制",
+    "type": "bool",
+    "hint": "是否启用记忆的遗忘机制",
+    "default": true
+  },
+  "enable_consolidation": {
+    "description": "启用记忆整理",
+    "type": "bool",
+    "hint": "是否启用记忆的整理和合并",
+    "default": true
+  },
+  "bimodal_recall": {
+    "description": "双峰时间回忆",
+    "type": "bool",
+    "hint": "是否启用双峰时间分布的回忆模式",
+    "default": true
+  },
+  "llm_provider": {
+    "description": "LLM服务提供商",
+    "type": "string",
+    "hint": "选择用于记忆形成的LLM服务提供商，将使用AstrBot配置的对应提供商",
+    "default": "openai"
+  },
+  "llm_system_prompt": {
+    "description": "LLM系统提示词",
+    "type": "text",
+    "hint": "用于指导LLM形成记忆的系统提示词",
+    "default": "你是一个记忆总结助手，请将对话内容总结成简洁自然的记忆。"
+  },
+  "embedding_provider": {
+    "description": "嵌入模型服务提供商",
+    "type": "string",
+    "hint": "选择嵌入模型的服务提供商，将使用AstrBot配置的对应提供商",
+    "default": "openai"
+  },
+  "embedding_model": {
+    "description": "嵌入模型名称",
+    "type": "string",
+    "hint": "指定要使用的嵌入模型名称，留空将使用提供商的默认模型",
+    "default": ""
+  },
+  "enable_multimodal": {
+    "description": "启用多模态记忆",
+    "type": "bool",
+    "hint": "启用图文多模态记忆：用户发送的图片会被 CLIP 编码并存储到 LanceDB，支持跨模态检索",
+    "default": false
+  },
+  "lancedb_path": {
+    "description": "LanceDB 数据目录",
+    "type": "string",
+    "hint": "LanceDB 向量数据库的存储路径，相对于 AstrBot 数据目录",
+    "default": "data/lancedb"
+  },
+  "clip_model": {
+    "description": "CLIP 模型名称",
+    "type": "string",
+    "hint": "用于图文编码的 CLIP 模型，支持 HuggingFace 模型名或本地路径",
+    "default": "openai/clip-vit-base-patch32"
+  },
+  "multimodal_text_weight": {
+    "description": "融合向量文本权重",
+    "type": "float",
+    "hint": "图文融合向量中文字部分的权重 (0-1)，图片权重 = 1 - 文本权重",
+    "default": 0.5
+  },
+  "max_injected_memories": {
+    "description": "最大注入记忆数",
+    "type": "int",
+    "hint": "每次对话中最多注入多少条相关记忆到LLM上下文",
+    "default": 5
+  },
+  "enable_enhanced_memory": {
+    "description": "启用增强记忆功能",
+    "type": "bool",
+    "hint": "是否启用增强记忆功能，包括增强召回和自动注入相关记忆到LLM上下文（此选项不使用llm）",
+    "default": true
+  },
+  "memory_injection_threshold": {
+    "description": "记忆注入阈值",
+    "type": "float",
+    "hint": "记忆相关性阈值，低于此值的记忆不会被注入(0-1)",
+    "default": 0.3
+  },
+  "conversation_history_count": {
+    "description": "对话历史条数",
+    "type": "int",
+    "hint": "获取对话历史时的最大条数，影响记忆提取的上下文范围",
+    "default": 20
+  },
+  "topic_trigger_interval_minutes": {
+    "description": "话题分析触发间隔（分钟）",
+    "type": "int",
+    "hint": "距离上次分析超过此时间后自动触发话题分析",
+    "default": 5
+  },
+  "topic_message_threshold": {
+    "description": "话题分析消息阈值",
+    "type": "int",
+    "hint": "积累到此数量的消息后触发话题分析",
+    "default": 12
+  },
+  "enable_persona_injection_in_memory_generation": {
+    "description": "启用记忆生成人格注入",
+    "type": "bool",
+    "hint": "是否在话题分析/记忆生成阶段注入当前会话人格设定",
+    "default": true
+  },
+  "recent_completed_sessions_count": {
+    "description": "保留的已完成会话数量",
+    "type": "int",
+    "hint": "用于构建LLM上下文的最近已完成会话摘要数量",
+    "default": 5
+  },
+  "exclude_keywords": {
+    "description": "排除关键词列表",
+    "type": "list",
+    "hint": "如果消息以这些关键词开头，将被记忆系统忽略",
+    "default": []
+  },
+  "web_ui": {
+    "description": "Web 界面",
+    "type": "object",
+    "hint": "配置内置 Web 管理界面 (实验性)",
+    "items": {
+      "enabled": {
+        "description": "启用Web界面",
+        "type": "bool",
+        "default": false,
+        "obvious_hint": true
+      },
+      "host": {
+        "description": "监听地址",
+        "type": "string",
+        "default": "127.0.0.1"
+      },
+      "port": {
+        "description": "端口",
+        "type": "int",
+        "default": 6180
+      },
+      "access_token": {
+        "description": "访问令牌(可选)",
+        "type": "string",
+        "hint": "如设置，访问 /api/* 需在 Header 中携带 x-access-token",
+        "default": ""
+      }
+    }
+  },
+
+  "tag_system_enabled": {
+    "description": "启用标签联想系统",
+    "type": "bool",
+    "hint": "启用货品-人群-平台三级标签联想服务，支持5C法则匹配",
+    "default": true,
+    "obvious_hint": true
+  },
+  "tag_domains": {
+    "description": "启用的标签域",
+    "type": "object",
+    "hint": "控制哪些标签域处于启用状态",
+    "items": {
+      "commodity": {
+        "description": "启用货品域",
+        "type": "bool",
+        "default": true
+      },
+      "crowd": {
+        "description": "启用人群域",
+        "type": "bool",
+        "default": true
+      },
+      "platform": {
+        "description": "启用平台域",
+        "type": "bool",
+        "default": true
+      }
+    }
+  },
+  "association_weights": {
+    "description": "联想策略权重",
+    "type": "object",
+    "hint": "配置各联想策略的权重，总和应为1.0",
+    "items": {
+      "graph_walk": {
+        "description": "图遍历权重",
+        "type": "float",
+        "default": 0.35
+      },
+      "semantic": {
+        "description": "语义相似度权重",
+        "type": "float",
+        "default": 0.30
+      },
+      "cooccurrence": {
+        "description": "共现关系权重",
+        "type": "float",
+        "default": 0.20
+      },
+      "rule": {
+        "description": "规则驱动权重",
+        "type": "float",
+        "default": 0.15
+      }
+    }
+  },
+  "tag_embedding_mode": {
+    "description": "标签嵌入模式",
+    "type": "string",
+    "hint": "rule: 基于规则的嵌入（无需外部模型），external: 调用外部嵌入模型",
+    "options": ["rule", "external"],
+    "default": "rule"
+  },
+  "recall_weights": {
+    "description": "召回策略权重",
+    "type": "object",
+    "hint": "配置各召回策略的权重，总和应为1.0",
+    "items": {
+      "semantic": {
+        "description": "语义召回权重",
+        "type": "float",
+        "default": 0.40
+      },
+      "keyword": {
+        "description": "关键词召回权重",
+        "type": "float",
+        "default": 0.15
+      },
+      "associative": {
+        "description": "联想召回权重",
+        "type": "float",
+        "default": 0.15
+      },
+      "temporal": {
+        "description": "时间召回权重",
+        "type": "float",
+        "default": 0.03
+      },
+      "strength": {
+        "description": "强度召回权重",
+        "type": "float",
+        "default": 0.02
+      },
+      "tag_association": {
+        "description": "标签联想召回权重",
+        "type": "float",
+        "default": 0.15
+      },
+      "cross_domain": {
+        "description": "跨域联想召回权重",
+        "type": "float",
+        "default": 0.10
+      }
+    }
+  },
+  "tag_system_api": {
+    "description": "标签系统API",
+    "type": "object",
+    "hint": "配置标签系统API服务",
+    "items": {
+      "enabled": {
+        "description": "启用标签API",
+        "type": "bool",
+        "default": false,
+        "obvious_hint": true
+      },
+      "host": {
+        "description": "API监听地址",
+        "type": "string",
+        "default": "127.0.0.1"
+      },
+      "port": {
+        "description": "API端口",
+        "type": "int",
+        "default": 8351
+      }
+    }
+  }
+}
